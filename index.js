@@ -1,7 +1,7 @@
 const Core = require('@actions/core')
 const Api = require('./src/api')
 
-const setSecret = async (secret_name, secret_value) => {
+const setSecret = async (api, secret_name, secret_value) => {
   try {
     const {key_id, key} = await api.getPublicKey()
     const data = await api.createSecret(key_id, key, secret_name, secret_value)
@@ -74,16 +74,17 @@ const boostrap = async (api, pairs) => {
     
     const privateKeyName = pair.name + "_PRIVATE_KEY";
     const privateKeyPrevName = pair.name + "_PRIVATE_KEY_PREV";
-    
+
+    console.log('xxx', 'yyy')
     //  MOVE OLD KEY TO PREV
-    await setSecret(publicKeyPrevName, pair.public)
-    await setSecret(privateKeyPrevName, pair.private)     
+    await setSecret(api, publicKeyPrevName, pair.public)
+    await setSecret(api, privateKeyPrevName, pair.private)
     
     // SET NEW
     const {publicKey, privateKey} = await getKeyPair();
     console.log({publicKey, privateKey});    
-    await setSecret(publicKeyName, publicKey)
-    await setSecret(privateKeyName, privateKey)        
+    await setSecret(api, publicKeyName, publicKey)
+    await setSecret(api, privateKeyName, privateKey)
   } // END OF FOR
 
   Core.setOutput('status', response.status)
