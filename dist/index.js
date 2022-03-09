@@ -6635,6 +6635,7 @@ var __webpack_exports__ = {};
 (() => {
 const Core = __nccwpck_require__(818)
 const Api = __nccwpck_require__(95)
+const crypto = __nccwpck_require__(113)
 
 const setSecret = async (api, secret_name, secret_value) => {
   try {
@@ -6666,7 +6667,7 @@ const setSecret = async (api, secret_name, secret_value) => {
 
 const getKeyPair = async (pwd = '') => {
     return new Promise((resolve, reject) => {
-        generateKeyPair('rsa', {
+        crypto.generateKeyPair('rsa', {
             modulusLength: 4096,
             publicKeyEncoding: {
                 type: 'spki',
