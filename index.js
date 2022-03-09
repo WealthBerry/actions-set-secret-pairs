@@ -1,5 +1,6 @@
 const Core = require('@actions/core')
 const Api = require('./src/api')
+const crypto = require('crypto')
 
 const setSecret = async (api, secret_name, secret_value) => {
   try {
@@ -31,7 +32,7 @@ const setSecret = async (api, secret_name, secret_value) => {
 
 const getKeyPair = async (pwd = '') => {
     return new Promise((resolve, reject) => {
-        generateKeyPair('rsa', {
+        crypto.generateKeyPair('rsa', {
             modulusLength: 4096,
             publicKeyEncoding: {
                 type: 'spki',
