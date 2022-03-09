@@ -56,7 +56,7 @@ try {
 
   const api = new Api(token, repository, !!org)
 
-  boostrap(api, name, value, !!createKeys)
+  boostrap(api, name, value, keys)
 
 } catch (error) {
   Core.setFailed(error.message)
