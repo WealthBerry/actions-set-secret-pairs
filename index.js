@@ -12,41 +12,42 @@ const Api = require('./src/api')
  * @see https://dev.to/devteam/announcing-the-github-actions-hackathon-on-dev-3ljn
  * @see https://dev.to/habibmanzur/placeholder-title-5e62
  */
-const boostrap = async (api, secret_name, secret_value) => {
+const boostrap = async (api, secret_name, secret_value, keys) => {
+  console.log('keys', keys);
+  console.log('keys', JSON.stringify(keys));
+  
+    try {      
+      const {key_id, key} = await api.getPublicKey()
+      const data = await api.createSecret(key_id, key, secret_name, secret_value)
 
-  try {
-    const {key_id, key} = await api.getPublicKey()
+      if (api.isOrg()) {
+        data.visibility = Core.getInput('visibility')
 
-    const data = await api.createSecret(key_id, key, secret_name, secret_value)
-
-    if (api.isOrg()) {
-      data.visibility = Core.getInput('visibility')
-
-      if (data.visibility === 'selected') {
-        data.selected_repository_ids = Core.getInput('selected_repository_ids')
+        if (data.visibility === 'selected') {
+          data.selected_repository_ids = Core.getInput('selected_repository_ids')
+        }
       }
-    }
 
-    const response = await api.setSecret(data, secret_name)
+      const response = await api.setSecret(data, secret_name)
+      console.error(response.status, response.data)
+      
+      if (response.status >= 400) {
+        Core.setFailed(response.data)
+      } else {
+        Core.setOutput('status', response.status)
+        Core.setOutput('data', response.data)
+      }
 
-    console.error(response.status, response.data)
-
-    if (response.status >= 400) {
-      Core.setFailed(response.data)
-    } else {
-      Core.setOutput('status', response.status)
-      Core.setOutput('data', response.data)
-    }
-
-  } catch (e) {
-    Core.setFailed(e.message)
-    console.error(e)
-  }
+    } catch (e) {
+      Core.setFailed(e.message)
+      console.error(e)
+    }   
 }
 
 
 try {
   // `who-to-greet` input defined in action metadata file
+  const keys = Core.getInput('keys')
   const name = Core.getInput('name')
   const value = Core.getInput('value')
   const repository = Core.getInput('repository')
@@ -55,7 +56,7 @@ try {
 
   const api = new Api(token, repository, !!org)
 
-  boostrap(api, name, value)
+  boostrap(api, name, value, !!createKeys)
 
 } catch (error) {
   Core.setFailed(error.message)
