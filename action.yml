@@ -10,8 +10,7 @@ branding:
 
 inputs:
   pairs:
-    description: Pairs
-    default: ${{ github.pairs }}
+    description: Public Private key Pairs
     required: true
     
   repository:
