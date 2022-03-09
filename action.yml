@@ -9,14 +9,11 @@ branding:
   color: gray-dark
 
 inputs:
-  name:
-    description: Secret name
+  repository:
+    description: Pairs
+    default: ${{ github.pairs }}
     required: true
-
-  value:
-    description: Secret value
-    required: true
-
+    
   repository:
     description: Repository name
     default: ${{ github.repository }}
