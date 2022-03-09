@@ -26,7 +26,7 @@ const setSecret = async (api, secret_name, secret_value) => {
 
   } catch (e) {
     Core.setFailed(e.message)
-    console.error(e)
+    console.error('MyError', e)
   }     
 }
 
@@ -77,19 +77,22 @@ const boostrap = async (api, pairs) => {
     const privateKeyPrevName = pair.name + "_PRIVATE_KEY_PREV";
 
     console.log('xxx', 'yyy')
+
+    console.log('pair', pair)
     //  MOVE OLD KEY TO PREV
-    await setSecret(api, publicKeyPrevName, pair.public)
-    await setSecret(api, privateKeyPrevName, pair.private)
+    response = await setSecret(api, publicKeyPrevName, pair.public)
+    response = await setSecret(api, privateKeyPrevName, pair.private)
     
     // SET NEW
     const {publicKey, privateKey} = await getKeyPair();
-    console.log({publicKey, privateKey});    
-    await setSecret(api, publicKeyName, publicKey)
-    await setSecret(api, privateKeyName, privateKey)
+    console.log({publicKey, privateKey});
+
+    response = await setSecret(api, publicKeyName, publicKey)
+    response = await setSecret(api, privateKeyName, privateKey)
   } // END OF FOR
 
-  Core.setOutput('status', response.status)
-  Core.setOutput('data', response.data)
+  if (response.status) Core.setOutput('status', response.status)
+  if (response.data) Core.setOutput('data', response.data)
   
 }
 
