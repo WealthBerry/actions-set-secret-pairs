@@ -76,8 +76,10 @@ const boostrap = async (api, pairs) => {
     const privateKeyName = pair.name + "_PRIVATE_KEY";
     const privateKeyPrevName = pair.name + "_PRIVATE_KEY_PREV";
 
-    console.log('pair.public Base64PublicKey: ', Buffer.from(pair.public).toString('base64'));
-    console.log('pair.private Base64PrivateKey: ', Buffer.from(pair.private).toString('base64'));
+    console.log('pair.name', pair.name);
+
+    console.log('pair.public  sha256: ', crypto.createHash('sha256').update(pair.public).digest('hex'));
+    console.log('pair.private sha256: ', crypto.createHash('sha256').update(pair.private).digest('hex'));
 
     //  MOVE OLD KEY TO PREV
     response = await setSecret(api, publicKeyPrevName, pair.public)
@@ -86,8 +88,8 @@ const boostrap = async (api, pairs) => {
     // SET NEW
     const {publicKey, privateKey} = await getKeyPair();
 
-    console.log('getKeyPair Base64PublicKey: ', Buffer.from(publicKey).toString('base64'));
-    console.log('getKeyPair Base64PrivateKey: ', Buffer.from(privateKey).toString('base64'));
+    console.log('publicKey sha256: ', crypto.createHash('sha256').update(publicKey).digest('hex'));
+    console.log('privateKey sha256: ', crypto.createHash('sha256').update(privateKey).digest('hex'));
 
     response = await setSecret(api, publicKeyName, publicKey)
     response = await setSecret(api, privateKeyName, privateKey)

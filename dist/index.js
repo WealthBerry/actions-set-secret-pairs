@@ -6733,7 +6733,6 @@ const boostrap = async (api, pairs) => {
   
 }
 
-
 try {
   // `who-to-greet` input defined in action metadata file
   let pairsOrig = Core.getInput('pairs')
