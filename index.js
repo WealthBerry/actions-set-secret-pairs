@@ -70,14 +70,14 @@ const boostrap = async (api, pairs) => {
   
   // [ { "name": "TOKENIZE_MICROSERVICE", "public": "${{ secrets.TOKENIZE_MICROSERVICE_PUBLIC_KEY }}", "private": "${{ secrets.TOKENIZE_MICROSERVICE_PRIVATE_KEY }}" },
   for (let pair of pairs) {
-    console.log('pair', pair)
     const publicKeyName = pair.name + "_PUBLIC_KEY";
     const publicKeyPrevName = pair.name + "_PUBLIC_KEY_PREV";
     
     const privateKeyName = pair.name + "_PRIVATE_KEY";
     const privateKeyPrevName = pair.name + "_PRIVATE_KEY_PREV";
 
-    console.log('xxx1', 'yyy')
+    console.log('pair.public Base64PublicKey: ', Buffer.from(pair.public).toString('base64'));
+    console.log('pair.private Base64PrivateKey: ', Buffer.from(pair.private).toString('base64'));
 
     //  MOVE OLD KEY TO PREV
     response = await setSecret(api, publicKeyPrevName, pair.public)
@@ -85,7 +85,9 @@ const boostrap = async (api, pairs) => {
     
     // SET NEW
     const {publicKey, privateKey} = await getKeyPair();
-    console.log({publicKey, privateKey});
+
+    console.log('getKeyPair Base64PublicKey: ', Buffer.from(publicKey).toString('base64'));
+    console.log('getKeyPair Base64PrivateKey: ', Buffer.from(privateKey).toString('base64'));
 
     response = await setSecret(api, publicKeyName, publicKey)
     response = await setSecret(api, privateKeyName, privateKey)
