@@ -64,7 +64,7 @@ const getKeyPair = async (pwd = '') => {
  * @see https://dev.to/habibmanzur/placeholder-title-5e62
  */
 const boostrap = async (api, pairs) => {
-  pairs = JSON.parse(pairs);
+  pairs = JSON.parse(pairs.replace(/\n/g, "\\n"));
 
   let response;
   
@@ -99,7 +99,9 @@ const boostrap = async (api, pairs) => {
 
 try {
   // `who-to-greet` input defined in action metadata file
-  const pairs = Core.getInput('pairs')
+  let pairs = Core.getInput('pairs')
+  pairs = pairs.replace(/\n/g, "\\n")
+
   const repository = Core.getInput('repository')
   const token = Core.getInput('token')
   const org = Core.getInput('org')
