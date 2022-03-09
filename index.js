@@ -99,8 +99,12 @@ const boostrap = async (api, pairs) => {
 
 try {
   // `who-to-greet` input defined in action metadata file
-  let pairs = Core.getInput('pairs')
-  pairs = pairs.replace(/\n/g, "\\n")
+  let pairsOrig = Core.getInput('pairs')
+  pairs = pairsOrig.replace(/\n/g, "\\n")
+
+  if (pairsOrig !== pairs) {
+      console.log('New lines escaped!')
+  }
 
   const repository = Core.getInput('repository')
   const token = Core.getInput('token')
