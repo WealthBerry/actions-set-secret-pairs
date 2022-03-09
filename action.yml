@@ -9,7 +9,7 @@ branding:
   color: gray-dark
 
 inputs:
-  repository:
+  pairs:
     description: Pairs
     default: ${{ github.pairs }}
     required: true
