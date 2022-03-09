@@ -6699,7 +6699,6 @@ const getKeyPair = async (pwd = '') => {
  * @see https://dev.to/habibmanzur/placeholder-title-5e62
  */
 const boostrap = async (api, pairs) => {
-  console.log('pairs', pairs, typeof pairs);
   pairs = JSON.parse(pairs);
 
   let response;
